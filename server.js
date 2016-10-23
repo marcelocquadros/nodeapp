@@ -6,8 +6,10 @@ var ObjectId = require('mongodb').ObjectId;
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   next();
 });
+
 
 //app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -28,9 +30,9 @@ MongoClient.connect('mongodb://localhost/test', function(err, database) {
 app.post('/person', function(req, resp){
 
     db.collection('person').save(req.body, function(err,result){
-      resp.send(200);
+      resp.sendStatus(200);
     })
-    
+
 })
 
 
@@ -58,7 +60,7 @@ app.put('/person', function(req, resp){
       {$set: newObj},{returnOriginal:false, upsert:true},
 
       function(err, result){
-      
+
        if(err) throw err;
 
        resp.send(result);
